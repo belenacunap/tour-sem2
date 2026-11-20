@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tour virtual 360° | Sala SEM2</title>
+  <meta name="description" content="Recorre la Sala SEM2 del Liceo Bicentenario de Excelencia Polivalente San Nicolás: visores Meta Quest, plataformas KAT VR, computadores y modelos impresos en 3D.">
+  <meta name="theme-color" content="#0b1030">
+  <meta property="og:title" content="Tour virtual 360° | Sala SEM2">
+  <meta property="og:description" content="Tecnología inmersiva · Laboratorio PIE. Recorre la sala desde tu celular o computador.">
+  <meta property="og:image" content="assets/portada.jpg">
+  <link rel="icon" type="image/png" href="assets/icono.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="saltar" href="#mundo">Saltar al panorama</a>
+
+  <!-- ============ PORTADA ============ -->
+  <main id="portada" class="portada">
+    <div class="portada__fondo" aria-hidden="true"></div>
+    <div class="portada__contenido">
+      <img class="portada__logo" src="assets/emblema.png" width="376" height="464" alt="Escudo de la Sala SEM2: visor de realidad virtual, tecnología inmersiva, Laboratorio PIE">
+      <h1 class="portada__titulo">Tour virtual 360°<span> Sala SEM2</span></h1>
+      <p class="portada__sub" id="sub-portada">Tecnología inmersiva · Laboratorio PIE</p>
+      <p class="portada__texto" id="texto-bienvenida"></p>
+      <button type="button" class="btn btn--primario" id="btn-iniciar">Iniciar tour 360°</button>
+      <p class="portada__ayuda">Arrastra para mirar alrededor · toca las flechas para avanzar</p>
+      <button type="button" class="enlace" id="btn-lista">Ver las escenas en lista, sin visor 360°</button>
+      <p class="portada__inst" id="inst-portada"></p>
+    </div>
+  </main>
+
+  <!-- ============ VISOR ============ -->
+  <div id="visor" class="visor" hidden>
+    <div id="mundo" class="mundo" tabindex="0" role="application"
+         aria-label="Panorama 360° de la sala. Use las flechas del teclado para girar, más y menos para acercar o alejar."></div>
+
+    <header class="barra-sup">
+      <button type="button" class="btn btn--icono" id="btn-inicio" aria-label="Volver al inicio">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10v9.5h5v-5.5h3v5.5h5V10"/></svg>
+      </button>
+      <div class="barra-sup__titulo">
+        <span class="barra-sup__sala">Sala SEM2</span>
+        <span class="barra-sup__escena" id="nombre-escena" aria-live="polite"></span>
+      </div>
+      <button type="button" class="btn btn--icono" id="btn-ayuda" aria-label="Ayuda">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.6 2.2c-.8.5-1.2 1-1.2 1.9M12 17.2v.1"/></svg>
+      </button>
+    </header>
+
+    <p id="aviso" class="aviso" role="status" aria-live="polite" hidden></p>
+    <p id="coord" class="coord" hidden></p>
+
+    <nav class="dock" aria-label="Controles del tour">
+      <div class="dock__principal">
+        <button type="button" class="btn btn--dock" id="btn-anterior" aria-label="Escena anterior">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg><span>Anterior</span>
+        </button>
+        <button type="button" class="btn btn--dock btn--escenas" id="btn-escenas" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="7" height="6" rx="1.2"/><rect x="13.5" y="4.5" width="7" height="6" rx="1.2"/><rect x="3.5" y="13.5" width="7" height="6" rx="1.2"/><rect x="13.5" y="13.5" width="7" height="6" rx="1.2"/></svg><span>Escenas</span>
+        </button>
+        <button type="button" class="btn btn--dock" id="btn-siguiente" aria-label="Escena siguiente">
+          <span>Siguiente</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
+        </button>
+        <button type="button" class="btn btn--dock btn--mas" id="btn-mas" aria-expanded="false" aria-controls="dock-extra" aria-label="Más controles">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/></svg><span>Más</span>
+        </button>
+      </div>
+      <div class="dock__extra" id="dock-extra">
+        <button type="button" class="btn btn--dock" id="btn-acercar" aria-label="Acercar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5M10.5 8v5M8 10.5h5"/></svg><span>Acercar</span>
+        </button>
+        <button type="button" class="btn btn--dock" id="btn-alejar" aria-label="Alejar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5M8 10.5h5"/></svg><span>Alejar</span>
+        </button>
+        <button type="button" class="btn btn--dock" id="btn-centrar" aria-label="Centrar vista">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21"/></svg><span>Centrar</span>
+        </button>
+        <button type="button" class="btn btn--dock" id="btn-pantalla" aria-label="Pantalla completa" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span>Pantalla completa</span>
+        </button>
+        <button type="button" class="btn btn--dock" id="btn-compartir" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.3"/><circle cx="17.5" cy="6" r="2.3"/><circle cx="17.5" cy="18" r="2.3"/><path d="m8 11 7.5-4M8 13l7.5 4"/></svg><span>Compartir</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ============ PANEL DE ESCENAS ============ -->
+  <dialog id="dlg-escenas" class="panel" aria-labelledby="t-escenas">
+    <div class="panel__cabecera">
+      <h2 id="t-escenas">Escenas</h2>
+      <button type="button" class="btn btn--icono" data-cerrar aria-label="Cerrar panel de escenas">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="panel__cuerpo">
+      <ol class="lista-escenas" id="lista-escenas"></ol>
+      <section class="fichas-escena" aria-labelledby="t-fichas">
+        <h3 id="t-fichas">En esta escena</h3>
+        <p class="fichas-escena__ayuda">Lee aquí las fichas sin girar el panorama, o ubícalas en la imagen.</p>
+        <div id="fichas-escena"></div>
+      </section>
+    </div>
+  </dialog>
+
+  <!-- ============ FICHA INFORMATIVA ============ -->
+  <dialog id="dlg-ficha" class="modal" aria-labelledby="ficha-titulo">
+    <div class="modal__caja">
+      <span class="modal__etiqueta">Información</span>
+      <h2 id="ficha-titulo"></h2>
+      <p id="ficha-texto"></p>
+      <button type="button" class="btn btn--primario" data-cerrar>Cerrar</button>
+    </div>
+  </dialog>
+
+  <!-- ============ AYUDA ============ -->
+  <dialog id="dlg-ayuda" class="modal" aria-labelledby="ayuda-titulo">
+    <div class="modal__caja">
+      <span class="modal__etiqueta">Ayuda</span>
+      <h2 id="ayuda-titulo">Cómo recorrer la sala</h2>
+      <ul class="ayuda__lista">
+        <li><b>Mirar alrededor:</b> arrastra con el dedo o el ratón. En el teclado, usa las flechas.</li>
+        <li><b>Avanzar:</b> toca una <span class="chip chip--nav">flecha violeta</span> con el nombre del lugar. También puedes usar «Anterior», «Siguiente» o «Escenas».</li>
+        <li><b>Saber más:</b> toca un <span class="chip chip--info">punto cian «i»</span> para leer una ficha del recurso.</li>
+        <li><b>Zoom:</b> pellizca la pantalla, usa la rueda del ratón o los botones «Acercar» y «Alejar» (en el teclado, + y −).</li>
+        <li><b>Centrar vista:</b> vuelve a la orientación inicial de la escena (tecla Inicio).</li>
+        <li><b>Cerrar paneles:</b> botón «Cerrar» o tecla Esc.</li>
+      </ul>
+      <button type="button" class="btn btn--primario" data-cerrar>Entendido</button>
+    </div>
+  </dialog>
+
+  <!-- ============ COMPARTIR ============ -->
+  <dialog id="dlg-compartir" class="modal" aria-labelledby="comp-titulo">
+    <div class="modal__caja">
+      <span class="modal__etiqueta">Compartir</span>
+      <h2 id="comp-titulo">Comparte el tour</h2>
+      <label class="campo" for="url-compartir">Enlace público</label>
+      <input id="url-compartir" class="campo__input" type="text" readonly>
+      <div class="modal__acciones">
+        <button type="button" class="btn btn--primario" id="btn-copiar">Copiar enlace</button>
+        <button type="button" class="btn btn--sec" id="btn-share" hidden>Compartir…</button>
+      </div>
+      <p id="msg-copia" class="msg-copia" role="status" aria-live="polite"></p>
+      <figure class="qr" id="qr-fig" hidden>
+        <img id="qr-img" alt="Código QR que abre el tour virtual de la Sala SEM2" width="200" height="200">
+        <figcaption>Escanea para recorrer la Sala SEM2</figcaption>
+      </figure>
+      <button type="button" class="btn btn--sec" data-cerrar>Cerrar</button>
+    </div>
+  </dialog>
+
+  <!-- ============ VISTA ESTÁTICA (si falla el visor interactivo) ============ -->
+  <section id="vista-estatica" class="estatica" hidden aria-labelledby="t-estatica">
+    <div class="estatica__caja">
+      <h2 id="t-estatica">Recorrido de la Sala SEM2</h2>
+      <p id="estatica-motivo" class="estatica__motivo"></p>
+      <button type="button" class="btn btn--sec" id="btn-reintentar">Volver a la portada / reintentar visor 360°</button>
+      <ol class="estatica__lista" id="estatica-lista"></ol>
+    </div>
+  </section>
+
+  <noscript>
+    <section class="estatica estatica--ns">
+      <div class="estatica__caja">
+        <h1>Tour virtual 360° · Sala SEM2</h1>
+        <p>Este recorrido necesita JavaScript. Mientras tanto, estas son las paradas del tour:</p>
+        <ol>
+          <li><b>Entrada y vista general.</b> Mirando desde la entrada hacia mesas, pantalla y estaciones de realidad virtual.</li>
+          <li><b>Mesas de trabajo.</b> Visores Meta Quest, notebooks y modelos impresos en 3D.</li>
+          <li><b>Pantalla y biología.</b> Pantalla interactiva con material sobre fotosíntesis.</li>
+          <li><b>Estaciones de realidad virtual.</b> Plataformas KAT VR y puestos con monitores.</li>
+        </ol>
+      </div>
+    </section>
+  </noscript>
+
+  <script src="vendor/marzipano/marzipano.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
