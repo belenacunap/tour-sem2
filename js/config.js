@@ -21,9 +21,9 @@ window.TOUR_CONFIG = {
     "distintas perspectivas y dar forma a proyectos de los estudiantes.",
 
   // URL pública definitiva (GitHub Pages). Si queda vacía, «Compartir» usa la dirección actual del navegador.
-  urlPublica: "",
+  urlPublica: "https://belenacunap.github.io/tour-sem2/",
   // Ruta de la imagen del QR (se genera con scripts/generar_qr.py). Si queda vacía, no se muestra el QR.
-  qr: "",
+  qr: "assets/qr-tour-sem2.png",
 
   // Primera escena del recorrido
   escenaInicial: "entrada",
